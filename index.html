@@ -26,11 +26,19 @@
 			width: 128px;
 			height: 128px;
 		}
+
+		.missile {
+			position: absolute;
+			background-color: rgb(161, 200, 21);
+			width: 2px;
+			height: 10px;
+		}
 	</style>
 
 	<div id="ocean">
 		<div id="players"></div>
 		<div id="enemies"></div>
+		<div id="missiles"></div>
 	</div>
 
 	<script type="text/javascript">
@@ -47,6 +55,9 @@
 			{ left: 450, top: 50 },
 			{ left: 550, top: 50 },
 		]
+
+		var missiles = []
+
 		var limitePantalla = {
 			left: 10,
 			right: 830,
@@ -72,6 +83,20 @@
 			for (var idx = 0; idx < enemies.length; idx++) {
 				enemies[idx].top = enemies[idx].top + 5;
 			}
+		}
+
+		function moveMissiles() {
+			for (var idx = 0; idx < missiles.length; idx++) {
+				missiles[idx].top = missiles[idx].top - 10;
+			}
+		}
+
+		function drawMissiles() {
+			content = "";
+			for (var idx = 0; idx < missiles.length; idx++) {
+				content += "<div class='missile' style='left:" + missiles[idx].left + "px; top:" + missiles[idx].top + "px'></div>"
+			}
+			document.getElementById("missiles").innerHTML = content;
 		}
 
 		document.onkeydown = function (e) {
@@ -100,6 +125,12 @@
 					console.log(player.top);
 				}
 			}
+			if (e.keyCode == 32) { // Space
+				// fire
+				missiles.push({ left: (player.left + 34), top: (player.top - 8) })
+				console.log(missiles);
+				drawMissiles();
+			}
 			drawPlayer();
 		}
 
@@ -112,8 +143,9 @@
 
 			moveEnemies();
 			drawEnemies();
-
-			setTimeout(gameLoop, 1000);
+			moveMissiles();
+			drawMissiles();
+			setTimeout(gameLoop, 200);
 		}
 		gameLoop();
 	</script>
