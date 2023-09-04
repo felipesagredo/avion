@@ -66,10 +66,13 @@
 				content += "<div class='enemy' style='left:" + enemies[idx].left + "px; top: " + enemies[idx].top + "px'></div>";
 			}
 			document.getElementById("enemies").innerHTML = content;
-
 		}
-		drawEnemies();
-		drawPlayer();
+
+		function moveEnemies() {
+			for (var idx = 0; idx < enemies.length; idx++) {
+				enemies[idx].top = enemies[idx].top + 5;
+			}
+		}
 
 		document.onkeydown = function (e) {
 			//console.log(e)
@@ -99,6 +102,20 @@
 			}
 			drawPlayer();
 		}
+
+
+
+		function gameLoop() {
+			console.log("gameLoop is running!");
+
+			drawPlayer();
+
+			moveEnemies();
+			drawEnemies();
+
+			setTimeout(gameLoop, 1000);
+		}
+		gameLoop();
 	</script>
 </body>
 
